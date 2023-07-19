@@ -1,0 +1,19 @@
+{
+    "name": "your-project-name",
+    "version": "1.0.0",
+    "description": "Your project description",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon --exec ts-node src/typescript.ts --watch"
+    },
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "typescript": "^5.1.6"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1",
+        "ts-node": "^10.9.1"
+    }
+}
