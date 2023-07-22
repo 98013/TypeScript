@@ -1,6 +1,11 @@
-// different ways of writing generics in Typescript.
+// #type of
+const myNumber = 15;
+console.log(typeof myNumber);
 
+// #Satisfies
+console.log(myNumber satisfies number > 10);
 
+// #different ways of writing generics in Typescript.
 function generalizedGenericFunction<T>( variable: T) {
     return variable;
 }
@@ -52,9 +57,7 @@ let simpleStringObject: Ipair<number | string> & (pass | tution) = { first: 100,
 console.log(simpleNumberObject);
 console.log(simpleStringObject);
 
-
-
-// Dynamic key's with enum's
+// #Dynamic key's with enum's
 enum objectProps {
     Name = 'name',
     Age = 'age',
@@ -69,11 +72,10 @@ type myGenericObjectType<T> = {
 let myGenericObject: myGenericObjectType<string | number> = { [objectProps.Name]: 'Naseer', [objectProps.Age]: '32', [objectProps.Gender]: 'Male', [objectProps.Salary]: 50000 };
 console.log(myGenericObject);
 
-// Generic Utility Types
+// #Generic Utility Types
 // #Partial, 
 // #Readonly,
 // #Record<K,T> keys mapped structure of T
-
 
 const myPartialProperty: Partial<myGenericObjectType<string | number>> = { [objectProps.Name]: 'Name', [objectProps.Age]: 32 };
 console.log(myPartialProperty);
@@ -91,18 +93,28 @@ type keys = 'name' | "number" | "boolean";
 let RecordType1: Record<keys, typeRecordType> = { 'name': { key1: 'First Key' }, 'number': { key1: 'Second Key' }, "boolean": { key1: 'Third Key' } }
 console.log(RecordType1);
 
-// Satisfies
-export type Shape = {
+// #Satisfies
+export interface IShape {
     type: 'oval' | 'react';
-    color: string | number;
+    color: string;
 }
 
-const shape =
-    {
-        type: "oval",
-        color: 1
-    } satisfies Shape;
-console.log('the shape of oval is',shape.type);
+// #First way of writing.
+const IShapeObject: IShape = { type:'react', color:'green' };
+console.log('Interface with Satisfies keyword', IShapeObject.type)
+// #Second way of writing.
+const IShapeObject1 = { type: 'react', color: 'yellow' } satisfies IShape
+console.log('Type with Satisfies keyword ',IShapeObject1.color);
+
+// #type declaration.
+type TShapeObject = {
+    type: 'oval' | 'react',
+    color: string
+}
+// #First way of writing.
+const TShapeObject1: TShapeObject = {type:'react', color:'pink'};
+// #Second way of writing.
+const TShapeObject2 = { type:'oval', color:'orange' } satisfies TShapeObject
 
 type Entity = {
     name: string;
@@ -116,15 +128,53 @@ const withValidation  = <T>(entity: T) => {
         validate () {}
     };
 }
-const newObj = withValidation<Entity>({name:'Naseer Mohammed', age: 32});
+
+// #First way of writing.
+const newObj = withValidation<Entity>(myEntity);
 console.log(newObj.age);
 
-// or in the other context.
+// #Second way of writing.
 const withValidation1  = <T extends Entity>(entity: T) => {
     return {
         ...entity,
         validate () {}
     };
 }
-const newObj1 = withValidation1(newObj);
+const newObj1 = withValidation1(myEntity);
 console.log(newObj1.age);
+
+// #Third way of writing.
+const newObj2 = withValidation(myEntity);
+console.log(newObj2.age)
+
+// #Fourth way of writing.
+const myEntity1: Entity[] = [{name:'react', age:33}]
+const withValidation2 = <T>(entity: T) =>{
+    return {
+        ...entity,
+        validate() { return console.log('validate method Called'); }
+    }
+}
+const newObj3 = withValidation2<Array<Entity>>(myEntity1);
+console.log(newObj3['0']);
+
+// #Object Types
+const varObj: object = { name:'naseer', age:32 };
+// #console.log(varObj?.name); // Gives you error.
+console.log(('name' in varObj && varObj.name) ?? 'Property does not  exist');
+
+// #string[] - string array
+// #number[] - number array
+// #{}[] - object array
+const ObjectArray: {name:string,age:number}[] = [{name:'naseer',age:32},{name:'Azhaan',age:1}]
+console.log('Object Array', ObjectArray);
+
+const wayGenericObject: {name:string,age:number} = {name:'',age:0}
+
+const waygenericTypes : (string | number | {name:string,age:number})[] = [{name:'naseer',age:32}];
+const wayGenericTypes1: (string[] | number[] | {}[]) = [{name:'naseer',age:32}]
+const wayGenericTypes2: (string | number |  typeof wayGenericObject)[] = [{name:'naseer',age:32}]
+const wayGenericTypes3: (string[] | number[] | typeof wayGenericObject[]) = [{name:'naseer',age:32}];
+console.log({"waygenericTypes": wayGenericObject},{"waygenericTypes": waygenericTypes}, {"waygenericTypes1":wayGenericTypes1}, {"wayGenericTypes2":wayGenericTypes2}, {"wayGenericTypes3":wayGenericTypes3});
+
+
