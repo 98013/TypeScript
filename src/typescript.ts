@@ -5,16 +5,28 @@ console.log(typeof myNumber);
 // #Satisfies
 console.log(myNumber satisfies number > 10);
 
+type UserCols = "username" | "nickname" | "roles";
+type User = Record<UserCols, string | string[] | undefined>;
+
+const user: User = {
+    username: 'naseer',
+    nickname: undefined,
+    roles: ['admin', 'dev']
+} satisfies User
+
+console.log(user.roles);
+
+
 // #different ways of writing generics in Typescript.
-function generalizedGenericFunction<T>( variable: T) {
+function generalizedGenericFunction<T>(variable: T) {
     return variable;
 }
 
-function generalizedGenericFunction1<T>( variable: T) {
+function generalizedGenericFunction1<T>(variable: T) {
     return variable;
 }
 
-function generalizedGenericFunction2<T extends string | number | boolean>( variable: T) {
+function generalizedGenericFunction2<T extends string | number | boolean>(variable: T) {
     return variable;
 }
 
@@ -100,11 +112,11 @@ export interface IShape {
 }
 
 // #First way of writing.
-const IShapeObject: IShape = { type:'react', color:'green' };
+const IShapeObject: IShape = { type: 'react', color: 'green' };
 console.log('Interface with Satisfies keyword', IShapeObject.type)
 // #Second way of writing.
 const IShapeObject1 = { type: 'react', color: 'yellow' } satisfies IShape
-console.log('Type with Satisfies keyword ',IShapeObject1.color);
+console.log('Type with Satisfies keyword ', IShapeObject1.color);
 
 // #type declaration.
 type TShapeObject = {
@@ -112,20 +124,20 @@ type TShapeObject = {
     color: string
 }
 // #First way of writing.
-const TShapeObject1: TShapeObject = {type:'react', color:'pink'};
+const TShapeObject1: TShapeObject = { type: 'react', color: 'pink' };
 // #Second way of writing.
-const TShapeObject2 = { type:'oval', color:'orange' } satisfies TShapeObject
+const TShapeObject2 = { type: 'oval', color: 'orange' } satisfies TShapeObject
 
 type Entity = {
     name: string;
     age: number;
 }
 
-const myEntity: Entity = { name:'Bob', age:30 };
-const withValidation  = <T>(entity: T) => {
+const myEntity: Entity = { name: 'Bob', age: 30 };
+const withValidation = <T>(entity: T) => {
     return {
         ...entity,
-        validate () {}
+        validate() { }
     };
 }
 
@@ -134,10 +146,10 @@ const newObj = withValidation<Entity>(myEntity);
 console.log(newObj.age);
 
 // #Second way of writing.
-const withValidation1  = <T extends Entity>(entity: T) => {
+const withValidation1 = <T extends Entity>(entity: T) => {
     return {
         ...entity,
-        validate () {}
+        validate() { }
     };
 }
 const newObj1 = withValidation1(myEntity);
@@ -148,8 +160,8 @@ const newObj2 = withValidation(myEntity);
 console.log(newObj2.age)
 
 // #Fourth way of writing.
-const myEntity1: Entity[] = [{name:'react', age:33}]
-const withValidation2 = <T>(entity: T) =>{
+const myEntity1: Entity[] = [{ name: 'react', age: 33 }]
+const withValidation2 = <T>(entity: T) => {
     return {
         ...entity,
         validate() { return console.log('validate method Called'); }
@@ -159,28 +171,28 @@ const newObj3 = withValidation2<Array<Entity>>(myEntity1);
 console.log(newObj3['0']);
 
 // #Object Types
-const varObj: object = { name:'naseer', age:32 };
+const varObj: object = { name: 'naseer', age: 32 };
 // #console.log(varObj?.name); // Gives you error.
 console.log(('name' in varObj && varObj.name) ?? 'Property does not  exist');
 
 // #string[] - string array
 // #number[] - number array
 // #{}[] - object array
-const ObjectArray: {name:string,age:number}[] = [{name:'naseer',age:32},{name:'Azhaan',age:1}]
+const ObjectArray: { name: string, age: number }[] = [{ name: 'naseer', age: 32 }, { name: 'Azhaan', age: 1 }]
 console.log('Object Array', ObjectArray);
 
-const wayGenericObject: {name:string,age:number} = {name:'',age:0}
+const wayGenericObject: { name: string, age: number } = { name: '', age: 0 }
 
-const waygenericTypes : (string | number | {name:string,age:number})[] = [{name:'naseer',age:32}];
-const wayGenericTypes1: (string[] | number[] | {}[]) = [{name:'naseer',age:32}]
-const wayGenericTypes2: (string | number |  typeof wayGenericObject)[] = [{name:'naseer',age:32}]
-const wayGenericTypes3: (string[] | number[] | typeof wayGenericObject[]) = [{name:'naseer',age:32}];
-console.log({"waygenericTypes": wayGenericObject},{"waygenericTypes": waygenericTypes}, {"waygenericTypes1":wayGenericTypes1}, {"wayGenericTypes2":wayGenericTypes2}, {"wayGenericTypes3":wayGenericTypes3});
+const waygenericTypes: (string | number | { name: string, age: number })[] = [{ name: 'naseer', age: 32 }];
+const wayGenericTypes1: (string[] | number[] | {}[]) = [{ name: 'naseer', age: 32 }]
+const wayGenericTypes2: (string | number | typeof wayGenericObject)[] = [{ name: 'naseer', age: 32 }]
+const wayGenericTypes3: (string[] | number[] | typeof wayGenericObject[]) = [{ name: 'naseer', age: 32 }];
+console.log({ "waygenericTypes": wayGenericObject }, { "waygenericTypes": waygenericTypes }, { "waygenericTypes1": wayGenericTypes1 }, { "wayGenericTypes2": wayGenericTypes2 }, { "wayGenericTypes3": wayGenericTypes3 });
 
 
 // #Tuple - Fixed length and fixed type's in it.
-let myTuple: [string, number, boolean] = ['Naseer Mohammed',98013,true];
-console.log(myTuple[0], myTuple[1],myTuple[2]);
+let myTuple: [string, number, boolean] = ['Naseer Mohammed', 98013, true];
+console.log(myTuple[0], myTuple[1], myTuple[2]);
 
 //# Enums is a set used to give numeric values friendly names.
 enum myEnum {
@@ -195,3 +207,39 @@ console.log(myEnum.Zero, myEnum.First, myEnum.Second)
 type Price = 45 | 30 | 10;
 let price: Price = 45;
 console.log(price);
+
+// # Exhaustive Switch using discriminated Unions.
+type QueryOptionsOld = {
+    table: 'users' | 'widgets' | 'sessions',
+    userId?: string,
+    widgetId?: string,
+    sessionId?: string,
+    limit: number,
+    offset: number
+    }
+
+type QueryOptions = { limit:number; offset:number } & ({
+    table: "users",
+    userId: string,
+} | { table: "widget", widgetId: string } | { table: "sessions", sessionId: string });
+
+function query(options: QueryOptions): string {
+    switch (options.table) {
+        case 'users': {
+            return options.userId + options.limit;
+        }
+        case 'sessions': {
+            return options.sessionId + options.offset;
+        }
+        case 'widget': {
+            return options.widgetId + options.offset
+        }
+        default: {
+            assert(options);
+        }
+    }
+}
+
+function assert(x: never): never {
+    throw('cannot reach this place in the code')
+}

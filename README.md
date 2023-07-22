@@ -23,3 +23,4 @@
 # Interfaces.
 # Modules.
 # Classes.
+# TypeScript Exhaustive Switch using discriminated Unions.
