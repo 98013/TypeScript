@@ -178,3 +178,20 @@ const wayGenericTypes3: (string[] | number[] | typeof wayGenericObject[]) = [{na
 console.log({"waygenericTypes": wayGenericObject},{"waygenericTypes": waygenericTypes}, {"waygenericTypes1":wayGenericTypes1}, {"wayGenericTypes2":wayGenericTypes2}, {"wayGenericTypes3":wayGenericTypes3});
 
 
+// #Tuple - Fixed length and fixed type's in it.
+let myTuple: [string, number, boolean] = ['Naseer Mohammed',98013,true];
+console.log(myTuple[0], myTuple[1],myTuple[2]);
+
+//# Enums is a set used to give numeric values friendly names.
+enum myEnum {
+    Zero,
+    First,
+    Second
+}
+
+console.log(myEnum.Zero, myEnum.First, myEnum.Second)
+
+// #Literal Types(also know as Type Ailas) can be of string,number or boolean
+type Price = 45 | 30 | 10;
+let price: Price = 45;
+console.log(price);
