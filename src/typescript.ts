@@ -1,14 +1,23 @@
+const axios = require('axios');
 // #type of
 const myNumber = 15;
 console.log(typeof myNumber);
 
-// #Satisfies
+// #is keyword to check is of certain data type.
+// # to tell is of certain type.
+
+
+// #Using keyword available in Node 5.2
+
+
+
+// #Satisfies operator.
 console.log(myNumber satisfies number > 10);
 
 type UserCols = "username" | "nickname" | "roles";
 type User = Record<UserCols, string | string[] | undefined>;
 
-const user: User = {
+const user = {
     username: 'naseer',
     nickname: undefined,
     roles: ['admin', 'dev']
@@ -243,3 +252,107 @@ function query(options: QueryOptions): string {
 function assert(x: never): never {
     throw('cannot reach this place in the code')
 }
+
+
+// #Intimidating TypeScript features, we can pass type to other types!
+// #Generic Feature 1.
+type MyGenericType<T> = 
+{
+    data: T;
+};
+
+type Example1Type1Object = MyGenericType<{firstName: string}>;
+//                     ^?
+const OutExample1Type1Object: Example1Type1Object = {data:{firstName:'Naseer'}};
+console.log('Generic Type Object is ',OutExample1Type1Object);
+
+type Example1Type1Array = MyGenericType<{[key:string]:(string | number | boolean)[]}>;
+//                     ^?
+const OutExample1Type1Array: Example1Type1Array = {data:{key:['A',98013,true]}}
+console.log('Generic Type Array is ',OutExample1Type1Array)
+
+// #Generic Feature 2.
+type IjsonResponse = {
+    userId: string,
+    id: number,
+    title: string,
+    completed: boolean
+}
+
+type Rating = {
+    rate:  number;
+    count: number;
+}
+
+type Welcome = {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    category: string;
+    image: string;
+    rating: Rating;
+}
+
+type IProduct = Welcome & Rating;
+const makeRequest = async<T>(url:string): Promise<T> | never  => {
+    try{
+        const response:T = await axios.get(url).then((response:T) => response).then((json: T) => (json)) ;
+        return <T>response;
+    }
+    catch(error: any){
+        throw new Error(error);
+    }
+}
+
+const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((result: IProduct) => result);
+responseItems.then((result: IProduct) => console.log(result));
+
+// 3.#Generic Feature with Set.
+const set = new Set<number | string | boolean>();
+//                                                 ^?
+set.add(98013);
+set.add('Naseer Mohammed');
+set.add(true);
+console.log([set.keys()],[set.entries()]);
+
+// #creating a iterator Object of Keys.
+const iteriatorKeys = set.keys();
+console.log(iteriatorKeys.next().value);
+console.log(iteriatorKeys.next().value);
+console.log(iteriatorKeys.next().value);
+
+// #creating a iterator Object of Values.
+const iteriatorValues = set.values();
+console.log(iteriatorValues.next().value);
+console.log(iteriatorValues.next().value);
+console.log(iteriatorValues.next().value);
+
+
+const TResponse: IjsonResponse = {userId:'980130', title:'Fellow Ship', id:98013, completed:true };
+//                                                                                       ^?
+//=>
+
+// #way 1
+const functionBinding = <T>(entity: T): (T & {validate: () => void}) => {
+    return {
+            ...entity,
+            validate: () => { return console.log('function 1 validate instantiated'); } 
+    }
+}
+
+// #way 2
+const functionBinding1 = <T>(entity: T) => {
+    return {
+            ...entity,
+            validate: () => { return console.log('function 2 validate instantiated'); } 
+    }
+}
+
+// #calling in first way(#way 1).
+const output = functionBinding<IjsonResponse>(TResponse);
+console.log(output.validate());
+
+// #calling in second way(#way 2).
+const output1 = functionBinding1<IjsonResponse>(TResponse);
+console.log(output1.validate());

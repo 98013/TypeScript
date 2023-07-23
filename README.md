@@ -4,7 +4,7 @@
     #number
     #boolean
     #string
-# Satisfies.
+# Satisfies Operator.
 # Type Inference.
 # Object Types.
 # Array Types.
@@ -24,3 +24,5 @@
 # Modules.
 # Classes.
 # TypeScript Exhaustive Switch using discriminated Unions.
+# is Keyword.
+# Using keyWord.
