@@ -1,0 +1,1 @@
+# to run typescript we require nodemon and ts-node dependency also

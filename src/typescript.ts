@@ -10,6 +10,12 @@ console.log(typeof myNumber);
 // #Using keyword available in Node 5.2
 
 
+// #Difference between as and satisfies operator.
+type Color = string | {r : number; g:number;b: number};
+const red: Color = 'Red';
+const green = 'Green' as Color; // #infers as Object.
+const blue = 'Blue' satisfies Color; // #infers as String.
+console.log(green.valueOf)
 
 // #Satisfies operator.
 console.log(myNumber satisfies number > 10);
