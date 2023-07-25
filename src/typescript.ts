@@ -63,8 +63,8 @@ const theme2 = {
     teritary: 'blue'
 } as const satisfies Theme
 
-// eslint-disable-next-line
-//theme2.secondary++
+// @ts-ignore
+theme2.secondary++
 theme2.primary.toUpperCase();
 
 type UserCols = "username" | "nickname" | "roles";

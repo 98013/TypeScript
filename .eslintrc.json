@@ -1,52 +1,41 @@
-module.exports = {
-    root: true, // This indicates that this is the root ESLint configuration file for the project.
-  
-    // Specify the environments where your code will run.
-    env: {
-      browser: true,
-      es2021: true,
-      node: true,
-    },
-  
-    // Specify the parser options for your project.
-    parserOptions: {
-      ecmaVersion: 2021,
-      sourceType: "module",
-      ecmaFeatures: {
-        jsx: true,
-      },
-    },
-  
-    // Specify the rules you want to enable or disable.
-    rules: {
-      // Example rules:
-      "no-console": "warn", // Warn about console.log() and similar functions.
-      "no-unused-vars": "error", // Error on unused variables.
-      "indent": ["error", 2], // Use 2 spaces for indentation.
-    },
-  
-    // Add any additional plugins you want to use.
-    plugins: [],
-  
-    // Extend from recommended configurations and presets.
-    extends: [
-      "eslint:recommended", // Use ESLint's recommended rules.
-      "plugin:react/recommended", // Use ESLint recommended rules for React.
-      "plugin:@typescript-eslint/recommended", // Use ESLint recommended rules for TypeScript.
-    ],
-  
-    // Add specific settings for different file types.
-    overrides: [
-      {
-        files: ["*.ts", "*.tsx"],
-        parser: "@typescript-eslint/parser",
-        extends: [
-          "plugin:@typescript-eslint/recommended", // Use ESLint recommended rules for TypeScript.
-          "plugin:@typescript-eslint/eslint-recommended", // Use additional ESLint rules for TypeScript.
-          "plugin:@typescript-eslint/recommended-requiring-type-checking", // Use ESLint rules that require type checking.
-          "plugin:react/recommended", // Use ESLint recommended rules for React.
-        ],
-      },
-    ],
-  };
-  
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-unused-vars": "error",
+    "indent": ["error", 2]
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:react/recommended"
+      ]
+    }
+  ]
+}
