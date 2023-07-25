@@ -10,15 +10,62 @@ console.log(typeof myNumber);
 // #Using keyword available in Node 5.2
 
 
-// #Difference between as and satisfies operator.
-type Color = string | {r : number; g:number;b: number};
+// #Difference between as and satisfies operator. 
+// #as operator - used to tell the Typescript complier that you know the actual type of a value more 
+// #precisely than Typescript can Infer.
+// #as is used for Type Narrowing.
+type Color = | string | { r: number; g: number; b: number };
 const red: Color = 'Red';
 const green = 'Green' as Color; // #infers as Object.
-const blue = 'Blue' satisfies Color; // #infers as String.
-console.log(green.valueOf)
+const blue = { r: 100, g: 100, b: 100 } satisfies Color; // #infers as String.
+console.log(red);
+console.log(green.valueOf());
+console.log(blue);
 
 // #Satisfies operator.
+// #the satisfies opertor is used for conditional types.it allows you to check if a type satisfies 
+// #certain conditions specified within a conditional type.
 console.log(myNumber satisfies number > 10);
+// #we can write someting 
+// #used for writing the type checking in an alternate way.
+type IsString<T> = T extends string ? true : false;
+let ResultString: IsString<string>;
+let ResultNumber: IsString<number>
+
+type ColorExpression = ColorString | ColorRGB;
+type ColorString = 'red' | 'blue' | 'yellow' | 'purple';
+type ColorRGB = 0;
+
+type Theme = Record<string, ColorExpression>;
+// # Normal Approach, where we need to add typechecking 
+const theme: Theme = {
+    primary: 'red',
+    secondary: 0,
+    teritary: 'purple'
+}
+
+typeof theme.primary === 'string' && theme.primary.toUpperCase();
+typeof theme.secondary === 'number' && theme.secondary++;
+
+// # Alternate Approach using Satisfies operator, typechecking can be overcome using Satisfies operator.
+const theme1 = {
+    primary:'blue',
+    secondary: 0,
+    teritary: 'yellow'
+} satisfies Theme
+
+theme1.primary.toUpperCase();
+
+//# making Object readonly using "as const satisfies"
+const theme2 = {
+    primary: 'red',
+    secondary: 0,
+    teritary: 'blue'
+} as const satisfies Theme
+
+// eslint-disable-next-line
+//theme2.secondary++
+theme2.primary.toUpperCase();
 
 type UserCols = "username" | "nickname" | "roles";
 type User = Record<UserCols, string | string[] | undefined>;
@@ -231,9 +278,9 @@ type QueryOptionsOld = {
     sessionId?: string,
     limit: number,
     offset: number
-    }
+}
 
-type QueryOptions = { limit:number; offset:number } & ({
+type QueryOptions = { limit: number; offset: number } & ({
     table: "users",
     userId: string,
 } | { table: "widget", widgetId: string } | { table: "sessions", sessionId: string });
@@ -256,26 +303,26 @@ function query(options: QueryOptions): string {
 }
 
 function assert(x: never): never {
-    throw('cannot reach this place in the code')
+    throw ('cannot reach this place in the code')
 }
 
 
 // #Intimidating TypeScript features, we can pass type to other types!
 // #Generic Feature 1.
-type MyGenericType<T> = 
-{
-    data: T;
-};
+type MyGenericType<T> =
+    {
+        data: T;
+    };
 
-type Example1Type1Object = MyGenericType<{firstName: string}>;
+type Example1Type1Object = MyGenericType<{ firstName: string }>;
 //                     ^?
-const OutExample1Type1Object: Example1Type1Object = {data:{firstName:'Naseer'}};
-console.log('Generic Type Object is ',OutExample1Type1Object);
+const OutExample1Type1Object: Example1Type1Object = { data: { firstName: 'Naseer' } };
+console.log('Generic Type Object is ', OutExample1Type1Object);
 
-type Example1Type1Array = MyGenericType<{[key:string]:(string | number | boolean)[]}>;
+type Example1Type1Array = MyGenericType<{ [key: string]: (string | number | boolean)[] }>;
 //                     ^?
-const OutExample1Type1Array: Example1Type1Array = {data:{key:['A',98013,true]}}
-console.log('Generic Type Array is ',OutExample1Type1Array)
+const OutExample1Type1Array: Example1Type1Array = { data: { key: ['A', 98013, true] } }
+console.log('Generic Type Array is ', OutExample1Type1Array)
 
 // #Generic Feature 2.
 type IjsonResponse = {
@@ -286,7 +333,7 @@ type IjsonResponse = {
 }
 
 type Rating = {
-    rate:  number;
+    rate: number;
     count: number;
 }
 
@@ -301,12 +348,12 @@ type Welcome = {
 }
 
 type IProduct = Welcome & Rating;
-const makeRequest = async<T>(url:string): Promise<T> | never  => {
-    try{
-        const response:T = await axios.get(url).then((response:T) => response).then((json: T) => (json)) ;
+const makeRequest = async<T>(url: string): Promise<T> | never => {
+    try {
+        const response: T = await axios.get(url).then((response: T) => response).then((json: T) => (json));
         return <T>response;
     }
-    catch(error: any){
+    catch (error: any) {
         throw new Error(error);
     }
 }
@@ -320,7 +367,7 @@ const set = new Set<number | string | boolean>();
 set.add(98013);
 set.add('Naseer Mohammed');
 set.add(true);
-console.log([set.keys()],[set.entries()]);
+console.log([set.keys()], [set.entries()]);
 
 // #creating a iterator Object of Keys.
 const iteriatorKeys = set.keys();
@@ -335,23 +382,23 @@ console.log(iteriatorValues.next().value);
 console.log(iteriatorValues.next().value);
 
 
-const TResponse: IjsonResponse = {userId:'980130', title:'Fellow Ship', id:98013, completed:true };
+const TResponse: IjsonResponse = { userId: '980130', title: 'Fellow Ship', id: 98013, completed: true };
 //                                                                                       ^?
 //=>
 
 // #way 1
-const functionBinding = <T>(entity: T): (T & {validate: () => void}) => {
+const functionBinding = <T>(entity: T): (T & { validate: () => void }) => {
     return {
-            ...entity,
-            validate: () => { return console.log('function 1 validate instantiated'); } 
+        ...entity,
+        validate: () => { return console.log('function 1 validate instantiated'); }
     }
 }
 
 // #way 2
 const functionBinding1 = <T>(entity: T) => {
     return {
-            ...entity,
-            validate: () => { return console.log('function 2 validate instantiated'); } 
+        ...entity,
+        validate: () => { return console.log('function 2 validate instantiated'); }
     }
 }
 
