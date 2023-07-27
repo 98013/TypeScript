@@ -26,3 +26,7 @@
 # TypeScript Exhaustive Switch using discriminated Unions.
 # is Keyword.
 # Using keyWord.
+# Interface.
+# type.
+# option type.
+# Awaitable.

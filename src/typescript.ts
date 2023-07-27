@@ -10,7 +10,15 @@ console.log(typeof myNumber);
 // #Using keyword available in Node 5.2
 
 
-// #Difference between as and satisfies operator. 
+// #Difference between as, satisfies operator and is.
+// #TypeScript's "is" type guard is useful when working with union types or intersection types. It allows you to discriminate 
+// #between the different possible types within a union or intersection, and in turn, enables you to access the specific 
+// #properties or methods of a certain type.
+
+type isTypeChecking<T> = 'Naseer Mohammed' | 1000;
+let stringTypeChecking: isTypeChecking<number> = 'Naseer Mohammed';
+console.log(stringTypeChecking);
+
 // #as operator - used to tell the Typescript complier that you know the actual type of a value more 
 // #precisely than Typescript can Infer.
 // #as is used for Type Narrowing.
@@ -43,13 +51,13 @@ const theme: Theme = {
     secondary: 0,
     teritary: 'purple'
 }
-
+// #here we are adding type checkig to avoid we use APPROACH-1
 typeof theme.primary === 'string' && theme.primary.toUpperCase();
 typeof theme.secondary === 'number' && theme.secondary++;
 
-// # Alternate Approach using Satisfies operator, typechecking can be overcome using Satisfies operator.
+//APPROACH-1 # Alternate Approach using Satisfies operator, typechecking can be overcome using Satisfies operator.
 const theme1 = {
-    primary:'blue',
+    primary: 'blue',
     secondary: 0,
     teritary: 'yellow'
 } satisfies Theme
@@ -386,7 +394,7 @@ const TResponse: IjsonResponse = { userId: '980130', title: 'Fellow Ship', id: 9
 //                                                                                       ^?
 //=>
 
-// #way 1
+// #way 1 we have added "validate: () => void" as intersection.
 const functionBinding = <T>(entity: T): (T & { validate: () => void }) => {
     return {
         ...entity,
@@ -394,7 +402,7 @@ const functionBinding = <T>(entity: T): (T & { validate: () => void }) => {
     }
 }
 
-// #way 2
+// #way 2, here we have 
 const functionBinding1 = <T>(entity: T) => {
     return {
         ...entity,
@@ -409,3 +417,52 @@ console.log(output.validate());
 // #calling in second way(#way 2).
 const output1 = functionBinding1<IjsonResponse>(TResponse);
 console.log(output1.validate());
+
+
+
+// #interfaces and Type in TypeScript
+// #interfaces can be used for declaration merging, where interfaces with same name can be merged.
+// #interface can have function declaration where parameter's can't be Optional 
+interface Iinterface {
+    firstName: string;
+    lastName: string;
+    age: number;
+    gender: string;
+}
+
+interface Iinterface {
+    getInfo(status: string): string;
+}
+
+class GeneralInformationObject implements Iinterface {
+    constructor() {
+    }
+    firstName = 'Naseer';
+    lastName = 'Mohammed';
+    age = 32;
+    gender = 'Male';
+    getInfo(status?: string): string {
+        return `Name: ${this.firstName}, SurName: ${this.lastName}, Age: ${this.age}, Gender: ${this.gender}, Married: ${status}`;
+    }
+}
+
+let InfoBluePrintClass = new GeneralInformationObject();
+console.log('Class Implemented using Interface ', InfoBluePrintClass.getInfo());
+
+// #type in TypeScript can have optional parameters.
+type GeneralInformationType = { firstName: string, lastName: string, age: number; gender: string };
+type typeInfo = (fname: string, lname: string, age: number, gender: string, status?: string) => string;
+
+const InfoBluePrintTypeFinal: GeneralInformationType = { firstName: 'Naseer', lastName: 'Mohammed', age: 32, gender: 'Male' };
+console.log('InfoBluePrintTypeFinal Properties', InfoBluePrintTypeFinal.firstName, InfoBluePrintTypeFinal.lastName, InfoBluePrintTypeFinal.age, InfoBluePrintTypeFinal.gender);
+const infoFinalOutput: typeInfo = (fname: string, lname: string, age: number, gender: string, status?: string) => `Name: ${fname}, SurName: ${lname}, Age: ${age}, Gender: ${gender}`;
+console.log('infoFinalOutput', infoFinalOutput('Naseer', 'Mohammed', 32, 'Male'));
+
+// # Using extends keyword in TypeScript.
+type obj = { gender: string };
+let extendedType: obj = { gender:"Male" }
+const mainObj = { name: 'Naseer Mohammed', age: 32, gender: 'Male' };
+function Myextension<T extends obj>(entity: T): T {
+    return <T>entity;
+}
+console.log('Extends Implementation ',Myextension(mainObj));
