@@ -363,11 +363,11 @@ const makeRequest = async<T>(url: string) => {
         return responseData;
     }
     catch (error: any) {
-        throw new Error(error);
+        console.log(error);
     }
 }
 
-const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((res) => resolve(res)).catch((error) => console.log(error));
+const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((res) => res)
 console.log("responseItems:", responseItems);
 
 // 3.#Generic Feature with Set.
@@ -553,13 +553,13 @@ console.log(LoginDevice.device);
 
 // #Mapped Type is use to create a new type by iteriating over list of properties.
 //PropA | propB | PropC converting it to  { PropA: ..., PropB:..., PropC:...};
-type Properties = "PropA" | "PropB" | "PropC";
+type Properties = "PropA" | "PropB" | "PropC" | 98013;
 type MappedType<Properties extends string | number | symbol> = {
     [key in Properties]: key;
 }
 type MyNewMappedType = MappedType<Properties>;
 
-// #TypeScript Mapped Types as clauses, agentda is to create getters and setters.
+// #TypeScript Mapped Types as clauses, agenda is to create getters and setters.
 type State = {
     name: string;
     age: string;
