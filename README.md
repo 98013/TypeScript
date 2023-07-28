@@ -30,3 +30,11 @@
 # type.
 # option type.
 # Awaitable.
+# keyof.
+# Lookup Types.
+# Mapped Types.
+# Union and Intersection.
+# enums.
+# Mapped Type.
+# TypeScript Mapped Types as clauses.
+# 

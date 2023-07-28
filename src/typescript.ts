@@ -1,5 +1,5 @@
 const axios = require('axios');
-// #type of
+// #typeof - typeof return's a type of a variable.
 const myNumber = 15;
 console.log(typeof myNumber);
 
@@ -356,18 +356,19 @@ type Welcome = {
 }
 
 type IProduct = Welcome & Rating;
-const makeRequest = async<T>(url: string): Promise<T> | never => {
+const makeRequest = async<T>(url: string) => {
     try {
-        const response: T = await axios.get(url).then((response: T) => response).then((json: T) => (json));
-        return <T>response;
+        const response = await axios.get(url);
+        const responseData = await response.data;
+        return responseData;
     }
     catch (error: any) {
         throw new Error(error);
     }
 }
 
-const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((result: IProduct) => result);
-responseItems.then((result: IProduct) => console.log(result));
+const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((res) => resolve(res)).catch((error) => console.log(error));
+console.log("responseItems:", responseItems);
 
 // 3.#Generic Feature with Set.
 const set = new Set<number | string | boolean>();
@@ -375,7 +376,7 @@ const set = new Set<number | string | boolean>();
 set.add(98013);
 set.add('Naseer Mohammed');
 set.add(true);
-console.log([set.keys()], [set.entries()]);
+console.log("Keys: ", [set.keys()], "Entries: ", [set.entries()]);
 
 // #creating a iterator Object of Keys.
 const iteriatorKeys = set.keys();
@@ -458,11 +459,118 @@ console.log('InfoBluePrintTypeFinal Properties', InfoBluePrintTypeFinal.firstNam
 const infoFinalOutput: typeInfo = (fname: string, lname: string, age: number, gender: string, status?: string) => `Name: ${fname}, SurName: ${lname}, Age: ${age}, Gender: ${gender}`;
 console.log('infoFinalOutput', infoFinalOutput('Naseer', 'Mohammed', 32, 'Male'));
 
-// # Using extends keyword in TypeScript.
-type obj = { gender: string };
-let extendedType: obj = { gender:"Male" }
-const mainObj = { name: 'Naseer Mohammed', age: 32, gender: 'Male' };
-function Myextension<T extends obj>(entity: T): T {
-    return <T>entity;
+// # extends keyword in TypeScript.
+//type obj = { length: number };
+type extendedObjType = { name: string, age: number };
+const mainObj: extendedObjType = { name: 'Naseer Mohammed', age: 32 };
+function Myextension<T extends extendedObjType>(entity: T, key: keyof extendedObjType): string {
+    return <string>entity[key] ?? entity[key] as string;
 }
-console.log('Extends Implementation ',Myextension(mainObj));
+console.log('Extends Implementation ', Myextension(mainObj, 'age'));
+
+// #Keyof - this is particullary used in the scenario of when pass the property persent in the Object or not
+type checkProperty = 'firstName' | 'lastName' | 'gender' | 'age';
+type personObjects = { firstName: string; lastName: string; gender: string; age: string };
+const person: personObjects = { firstName: 'firstName', lastName: 'lastName', gender: 'gender', age: 'age' };
+function checkObject(objectParameter: personObjects, key: checkProperty) {
+    return person[key];
+}
+console.log('Unconvertional way of using keyOf operator ', checkObject(person, 'firstName'));
+
+// # here we can use "keyof" directly on the type.
+function checkObject1(objectParameter: personObjects, key: keyof personObjects) {
+    return person[key];
+}
+console.log('Conventional way of using keyOf operator in TypeScript', checkObject1(person, 'firstName'));
+
+// # generic way of writing function 
+function genericFunction<T>(person: T, key: keyof T): T {
+    return <T>person[key];
+}
+console.log('Conventional way of using keyof using generics ', genericFunction<personObjects>(person, 'firstName'));
+
+// #Lookup Type - it is used to extract the Type from another type.
+// # 
+
+// # Union it can contain either A or B or (A and B), Intersection it should be A and B.
+type Name = { name: string };
+type Age = { age: number };
+
+type Union = Name | Age | (Name & Age);
+type Intersection = Name & Age;
+
+const name = { name: 'Naseer Mohammed' };
+const age = { age: 32 };
+const nameAndage = { name: 'Naseer Mohammed', age: 32 }
+
+let union: Union;
+union = name;
+union = age;
+union = nameAndage;
+
+let intersection: Intersection;
+intersection = nameAndage;
+// @ts-ignore
+intersection = name;
+// @ts-ignore
+intersection = age;
+
+// #enums -  Number Enums.
+enum LoginMode {
+    app = 0,
+    email = 1,
+    social = 2
+}
+
+// Lookup and reverse Lookup.
+LoginMode['app']; // 0.
+LoginMode[0];     // app.
+console.log(Object.keys(LoginMode)); // output: ["app", "email", "social", "0","1","2"]
+
+// # String Enums.
+enum LoginMode1 {
+    application = 'application',
+    eletronicMail = 'eletronicMail',
+    socialNetwork = 'socialNetwork'
+}
+
+console.log(Object.keys(LoginMode1)); // ['application','eletronicMail','socialNetwork']
+// stable over network 
+console.log(LoginMode1.application) // 'application'
+
+// #Alternate for enums is union of string literals.
+type loginMode = | 'app' | 'email' | 'social';
+// #alternate for string literals
+export const LoginDevice = {
+    device: 'device',
+    email: 'email',
+    social: 'social'
+} as const // #using "as const" make it readonly object. something like Object.freeze in javascript.
+
+type typeLoggingMechanism = keyof typeof LoginDevice;
+console.log(Object.keys(LoginDevice)); // ['device','email','social'];
+console.log(LoginDevice.device);
+
+// #Mapped Type is use to create a new type by iteriating over list of properties.
+//PropA | propB | PropC converting it to  { PropA: ..., PropB:..., PropC:...};
+type Properties = "PropA" | "PropB" | "PropC";
+type MappedType<Properties extends string | number | symbol> = {
+    [key in Properties]: key;
+}
+type MyNewMappedType = MappedType<Properties>;
+
+// #TypeScript Mapped Types as clauses, agentda is to create getters and setters.
+type State = {
+    name: string;
+    age: string;
+}
+
+// # propertykey.
+// # only a string, number or a symbol can used as object property
+// # use Propertykey instead of string | number | symbol.
+type objectDeclaration<T extends PropertyKey> = {
+    [key in T]: T
+}
+const ObjectDefinition: objectDeclaration<PropertyKey> = { name: 'name', 123: '123', 98013: 98013 };
+let ObjectKeys: keyof typeof ObjectDefinition;
+console.log('ObjectDefinition ', ObjectDefinition);
