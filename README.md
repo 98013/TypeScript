@@ -37,4 +37,5 @@
 # enums.
 # Mapped Type.
 # TypeScript Mapped Types as clauses.
-# 
+# ThisType Utility.
+# infer keyword.

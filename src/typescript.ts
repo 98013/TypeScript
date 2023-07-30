@@ -548,8 +548,17 @@ export const LoginDevice = {
 } as const // #using "as const" make it readonly object. something like Object.freeze in javascript.
 
 type typeLoggingMechanism = keyof typeof LoginDevice;
-console.log(Object.keys(LoginDevice)); // ['device','email','social'];
+console.log(Object.keys(LoginDevice));
 console.log(LoginDevice.device);
+
+// #Mapped Types using above object.
+type MappedTypes<T extends typeLoggingMechanism> = {
+    [key in typeLoggingMechanism]: key
+}
+
+type type1 = MappedTypes<typeLoggingMechanism>;
+let type1 = { device: "device", email: "email", social: "social" }
+console.log(type1);
 
 // #Mapped Type is use to create a new type by iteriating over list of properties.
 //PropA | propB | PropC converting it to  { PropA: ..., PropB:..., PropC:...};
@@ -574,3 +583,43 @@ type objectDeclaration<T extends PropertyKey> = {
 const ObjectDefinition: objectDeclaration<PropertyKey> = { name: 'name', 123: '123', 98013: 98013 };
 let ObjectKeys: keyof typeof ObjectDefinition;
 console.log('ObjectDefinition ', ObjectDefinition);
+
+// #ThisType Utility.
+type Math = {
+    double(): void;
+    triple(): void;
+}
+
+export const math: Math = {
+    double(this: { value: number }) {
+        this.value *= 2;
+    },
+    triple(this: { value: number }) {
+        this.value *= 3;
+    }
+}
+
+const thisutilityTypeObject = { ...math, value: 500 };
+console.log(thisutilityTypeObject);
+thisutilityTypeObject.double();
+console.log(thisutilityTypeObject.value);
+thisutilityTypeObject.triple();
+console.log(thisutilityTypeObject.value);
+
+export const MathwithTypeAnnotation: Math & ThisType<{ value: number }> = {
+    double() {
+        this.value = this.value * 2;
+    },
+    triple() {
+        this.value = this.value * 3;
+    }
+}
+
+// Object.assign copies prperties from source to target.
+const thisTypeAnnotactionsObject = Object.assign(MathwithTypeAnnotation, { value: 111 })
+thisTypeAnnotactionsObject.double();
+console.log(thisTypeAnnotactionsObject.value)
+thisTypeAnnotactionsObject.triple();
+console.log(thisTypeAnnotactionsObject.value);
+
+// # infer keyword is mainly used to create a type within a conditional type.
