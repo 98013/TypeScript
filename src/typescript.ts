@@ -47,9 +47,9 @@ type ColorRGB = 0;
 type Theme = Record<string, ColorExpression>;
 // # Normal Approach, where we need to add typechecking 
 const theme: Theme = {
-    primary: 'red',
-    secondary: 0,
-    teritary: 'purple'
+	primary: 'red',
+	secondary: 0,
+	teritary: 'purple'
 }
 // #here we are adding type checkig to avoid we use APPROACH-1
 typeof theme.primary === 'string' && theme.primary.toUpperCase();
@@ -57,18 +57,18 @@ typeof theme.secondary === 'number' && theme.secondary++;
 
 //APPROACH-1 # Alternate Approach using Satisfies operator, typechecking can be overcome using Satisfies operator.
 const theme1 = {
-    primary: 'blue',
-    secondary: 0,
-    teritary: 'yellow'
+	primary: 'blue',
+	secondary: 0,
+	teritary: 'yellow'
 } satisfies Theme
 
 theme1.primary.toUpperCase();
 
 //# making Object readonly using "as const satisfies"
 const theme2 = {
-    primary: 'red',
-    secondary: 0,
-    teritary: 'blue'
+	primary: 'red',
+	secondary: 0,
+	teritary: 'blue'
 } as const satisfies Theme
 
 // @ts-ignore
@@ -79,9 +79,9 @@ type UserCols = "username" | "nickname" | "roles";
 type User = Record<UserCols, string | string[] | undefined>;
 
 const user = {
-    username: 'naseer',
-    nickname: undefined,
-    roles: ['admin', 'dev']
+	username: 'naseer',
+	nickname: undefined,
+	roles: ['admin', 'dev']
 } satisfies User
 
 console.log(user.roles);
@@ -89,15 +89,15 @@ console.log(user.roles);
 
 // #different ways of writing generics in Typescript.
 function generalizedGenericFunction<T>(variable: T) {
-    return variable;
+	return variable;
 }
 
 function generalizedGenericFunction1<T>(variable: T) {
-    return variable;
+	return variable;
 }
 
 function generalizedGenericFunction2<T extends string | number | boolean>(variable: T) {
-    return variable;
+	return variable;
 }
 
 console.log(generalizedGenericFunction('Naseer Mohammed'), generalizedGenericFunction1(12345), generalizedGenericFunction1(true));
@@ -106,13 +106,13 @@ console.log(generalizedGenericFunction2('Naseer Mohammed'), generalizedGenericFu
 
 
 function typeScriptGenricCaller<T>(args: T[]): T[] {
-    return args;
+	return args;
 }
 let var_typeScriptGenricCaller = typeScriptGenricCaller<number>([1, 2, 3, 4, 5]);
 console.log(var_typeScriptGenricCaller);
 
 function typeScriptGenricCallerArray<T extends Array<number> | Array<string>>(args: T): T {
-    return <T>args.slice(4) ?? args.slice(4) as T;
+	return <T>args.slice(4) ?? args.slice(4) as T;
 }
 let arrayNumber = [1, 2, 3, 4, 5];
 let arrayStrings = ['1', '2', '3', '4', '5'];
@@ -125,13 +125,13 @@ type pass = { pass: "passed", marks: number };
 type tution = { tution: "yes", score: number };
 
 interface Ipair<T> {
-    first: T;
-    second: T
+	first: T;
+	second: T
 }
 
 interface Ipair<T> {
-    gender: T;
-    salary: T
+	gender: T;
+	salary: T
 }
 
 let simpleNumberObject: Ipair<number | string> & (pass | tution) = { first: 1, second: 2, gender: '32', salary: 'No Salary', pass: 'passed', marks: 123 }; console.log(simpleNumberObject);
@@ -141,14 +141,14 @@ console.log(simpleStringObject);
 
 // #Dynamic key's with enum's
 enum objectProps {
-    Name = 'name',
-    Age = 'age',
-    Gender = 'gender',
-    Salary = 'salary'
+	Name = 'name',
+	Age = 'age',
+	Gender = 'gender',
+	Salary = 'salary'
 }
 
 type myGenericObjectType<T> = {
-    [key in objectProps]: T
+	[key in objectProps]: T
 }
 
 let myGenericObject: myGenericObjectType<string | number> = { [objectProps.Name]: 'Naseer', [objectProps.Age]: '32', [objectProps.Gender]: 'Male', [objectProps.Salary]: 50000 };
@@ -167,7 +167,7 @@ const myRecordProperty: Record<'character1' | 'character2' | 'character3', Recor
 console.log(myRecordProperty)
 
 type typeRecordType = {
-    key1: string
+	key1: string
 }
 
 type keys = 'name' | "number" | "boolean";
@@ -177,8 +177,8 @@ console.log(RecordType1);
 
 // #Satisfies
 export interface IShape {
-    type: 'oval' | 'react';
-    color: string;
+	type: 'oval' | 'react';
+	color: string;
 }
 
 // #First way of writing.
@@ -190,8 +190,8 @@ console.log('Type with Satisfies keyword ', IShapeObject1.color);
 
 // #type declaration.
 type TShapeObject = {
-    type: 'oval' | 'react',
-    color: string
+	type: 'oval' | 'react',
+	color: string
 }
 // #First way of writing.
 const TShapeObject1: TShapeObject = { type: 'react', color: 'pink' };
@@ -199,16 +199,16 @@ const TShapeObject1: TShapeObject = { type: 'react', color: 'pink' };
 const TShapeObject2 = { type: 'oval', color: 'orange' } satisfies TShapeObject
 
 type Entity = {
-    name: string;
-    age: number;
+	name: string;
+	age: number;
 }
 
 const myEntity: Entity = { name: 'Bob', age: 30 };
 const withValidation = <T>(entity: T) => {
-    return {
-        ...entity,
-        validate() { }
-    };
+	return {
+		...entity,
+		validate() { }
+	};
 }
 
 // #First way of writing.
@@ -217,10 +217,10 @@ console.log(newObj.age);
 
 // #Second way of writing.
 const withValidation1 = <T extends Entity>(entity: T) => {
-    return {
-        ...entity,
-        validate() { }
-    };
+	return {
+		...entity,
+		validate() { }
+	};
 }
 const newObj1 = withValidation1(myEntity);
 console.log(newObj1.age);
@@ -232,10 +232,10 @@ console.log(newObj2.age)
 // #Fourth way of writing.
 const myEntity1: Entity[] = [{ name: 'react', age: 33 }]
 const withValidation2 = <T>(entity: T) => {
-    return {
-        ...entity,
-        validate() { return console.log('validate method Called'); }
-    }
+	return {
+		...entity,
+		validate() { return console.log('validate method Called'); }
+	}
 }
 const newObj3 = withValidation2<Array<Entity>>(myEntity1);
 console.log(newObj3['0']);
@@ -266,9 +266,9 @@ console.log(myTuple[0], myTuple[1], myTuple[2]);
 
 //# Enums is a set used to give numeric values friendly names.
 enum myEnum {
-    Zero,
-    First,
-    Second
+	Zero,
+	First,
+	Second
 }
 
 console.log(myEnum.Zero, myEnum.First, myEnum.Second)
@@ -280,47 +280,47 @@ console.log(price);
 
 // # Exhaustive Switch using discriminated Unions.
 type QueryOptionsOld = {
-    table: 'users' | 'widgets' | 'sessions',
-    userId?: string,
-    widgetId?: string,
-    sessionId?: string,
-    limit: number,
-    offset: number
+	table: 'users' | 'widgets' | 'sessions',
+	userId?: string,
+	widgetId?: string,
+	sessionId?: string,
+	limit: number,
+	offset: number
 }
 
 type QueryOptions = { limit: number; offset: number } & ({
-    table: "users",
-    userId: string,
+	table: "users",
+	userId: string,
 } | { table: "widget", widgetId: string } | { table: "sessions", sessionId: string });
 
 function query(options: QueryOptions): string {
-    switch (options.table) {
-        case 'users': {
-            return options.userId + options.limit;
-        }
-        case 'sessions': {
-            return options.sessionId + options.offset;
-        }
-        case 'widget': {
-            return options.widgetId + options.offset
-        }
-        default: {
-            assert(options);
-        }
-    }
+	switch (options.table) {
+		case 'users': {
+			return options.userId + options.limit;
+		}
+		case 'sessions': {
+			return options.sessionId + options.offset;
+		}
+		case 'widget': {
+			return options.widgetId + options.offset
+		}
+		default: {
+			assert(options);
+		}
+	}
 }
 
 function assert(x: never): never {
-    throw ('cannot reach this place in the code')
+	throw ('cannot reach this place in the code')
 }
 
 
 // #Intimidating TypeScript features, we can pass type to other types!
 // #Generic Feature 1.
 type MyGenericType<T> =
-    {
-        data: T;
-    };
+	{
+		data: T;
+	};
 
 type Example1Type1Object = MyGenericType<{ firstName: string }>;
 //                     ^?
@@ -334,37 +334,37 @@ console.log('Generic Type Array is ', OutExample1Type1Array)
 
 // #Generic Feature 2.
 type IjsonResponse = {
-    userId: string,
-    id: number,
-    title: string,
-    completed: boolean
+	userId: string,
+	id: number,
+	title: string,
+	completed: boolean
 }
 
 type Rating = {
-    rate: number;
-    count: number;
+	rate: number;
+	count: number;
 }
 
 type Welcome = {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-    rating: Rating;
+	id: number;
+	title: string;
+	price: number;
+	description: string;
+	category: string;
+	image: string;
+	rating: Rating;
 }
 
 type IProduct = Welcome & Rating;
 const makeRequest = async<T>(url: string) => {
-    try {
-        const response = await axios.get(url);
-        const responseData = await response.data;
-        return responseData;
-    }
-    catch (error: any) {
-        console.log(error);
-    }
+	try {
+		const response = await axios.get(url);
+		const responseData = await response.data;
+		return responseData;
+	}
+	catch (error: any) {
+		console.log(error);
+	}
 }
 
 const responseItems = makeRequest<IProduct>('https://fakestoreapi.com/products/1').then((res) => res)
@@ -397,18 +397,18 @@ const TResponse: IjsonResponse = { userId: '980130', title: 'Fellow Ship', id: 9
 
 // #way 1 we have added "validate: () => void" as intersection.
 const functionBinding = <T>(entity: T): (T & { validate: () => void }) => {
-    return {
-        ...entity,
-        validate: () => { return console.log('function 1 validate instantiated'); }
-    }
+	return {
+		...entity,
+		validate: () => { return console.log('function 1 validate instantiated'); }
+	}
 }
 
 // #way 2, here we have 
 const functionBinding1 = <T>(entity: T) => {
-    return {
-        ...entity,
-        validate: () => { return console.log('function 2 validate instantiated'); }
-    }
+	return {
+		...entity,
+		validate: () => { return console.log('function 2 validate instantiated'); }
+	}
 }
 
 // #calling in first way(#way 1).
@@ -425,26 +425,26 @@ console.log(output1.validate());
 // #interfaces can be used for declaration merging, where interfaces with same name can be merged.
 // #interface can have function declaration where parameter's can't be Optional 
 interface Iinterface {
-    firstName: string;
-    lastName: string;
-    age: number;
-    gender: string;
+	firstName: string;
+	lastName: string;
+	age: number;
+	gender: string;
 }
 
 interface Iinterface {
-    getInfo(status: string): string;
+	getInfo(status: string): string;
 }
 
 class GeneralInformationObject implements Iinterface {
-    constructor() {
-    }
-    firstName = 'Naseer';
-    lastName = 'Mohammed';
-    age = 32;
-    gender = 'Male';
-    getInfo(status?: string): string {
-        return `Name: ${this.firstName}, SurName: ${this.lastName}, Age: ${this.age}, Gender: ${this.gender}, Married: ${status}`;
-    }
+	constructor() {
+	}
+	firstName = 'Naseer';
+	lastName = 'Mohammed';
+	age = 32;
+	gender = 'Male';
+	getInfo(status?: string): string {
+		return `Name: ${this.firstName}, SurName: ${this.lastName}, Age: ${this.age}, Gender: ${this.gender}, Married: ${status}`;
+	}
 }
 
 let InfoBluePrintClass = new GeneralInformationObject();
@@ -464,7 +464,7 @@ console.log('infoFinalOutput', infoFinalOutput('Naseer', 'Mohammed', 32, 'Male')
 type extendedObjType = { name: string, age: number };
 const mainObj: extendedObjType = { name: 'Naseer Mohammed', age: 32 };
 function Myextension<T extends extendedObjType>(entity: T, key: keyof extendedObjType): string {
-    return <string>entity[key] ?? entity[key] as string;
+	return <string>entity[key] ?? entity[key] as string;
 }
 console.log('Extends Implementation ', Myextension(mainObj, 'age'));
 
@@ -473,19 +473,19 @@ type checkProperty = 'firstName' | 'lastName' | 'gender' | 'age';
 type personObjects = { firstName: string; lastName: string; gender: string; age: string };
 const person: personObjects = { firstName: 'firstName', lastName: 'lastName', gender: 'gender', age: 'age' };
 function checkObject(objectParameter: personObjects, key: checkProperty) {
-    return person[key];
+	return person[key];
 }
 console.log('Unconvertional way of using keyOf operator ', checkObject(person, 'firstName'));
 
 // # here we can use "keyof" directly on the type.
 function checkObject1(objectParameter: personObjects, key: keyof personObjects) {
-    return person[key];
+	return person[key];
 }
 console.log('Conventional way of using keyOf operator in TypeScript', checkObject1(person, 'firstName'));
 
 // # generic way of writing function 
 function genericFunction<T>(person: T, key: keyof T): T {
-    return <T>person[key];
+	return <T>person[key];
 }
 console.log('Conventional way of using keyof using generics ', genericFunction<personObjects>(person, 'firstName'));
 
@@ -517,9 +517,9 @@ intersection = age;
 
 // #enums -  Number Enums.
 enum LoginMode {
-    app = 0,
-    email = 1,
-    social = 2
+	app = 0,
+	email = 1,
+	social = 2
 }
 
 // Lookup and reverse Lookup.
@@ -529,9 +529,9 @@ console.log(Object.keys(LoginMode)); // output: ["app", "email", "social", "0","
 
 // # String Enums.
 enum LoginMode1 {
-    application = 'application',
-    eletronicMail = 'eletronicMail',
-    socialNetwork = 'socialNetwork'
+	application = 'application',
+	eletronicMail = 'eletronicMail',
+	socialNetwork = 'socialNetwork'
 }
 
 console.log(Object.keys(LoginMode1)); // ['application','eletronicMail','socialNetwork']
@@ -542,9 +542,9 @@ console.log(LoginMode1.application) // 'application'
 type loginMode = | 'app' | 'email' | 'social';
 // #alternate for string literals
 export const LoginDevice = {
-    device: 'device',
-    email: 'email',
-    social: 'social'
+	device: 'device',
+	email: 'email',
+	social: 'social'
 } as const // #using "as const" make it readonly object. something like Object.freeze in javascript.
 
 type typeLoggingMechanism = keyof typeof LoginDevice;
@@ -553,7 +553,7 @@ console.log(LoginDevice.device);
 
 // #Mapped Types using above object.
 type MappedTypes<T extends typeLoggingMechanism> = {
-    [key in typeLoggingMechanism]: key
+	[key in typeLoggingMechanism]: key
 }
 
 type type1 = MappedTypes<typeLoggingMechanism>;
@@ -564,21 +564,21 @@ console.log(type1);
 //PropA | propB | PropC converting it to  { PropA: ..., PropB:..., PropC:...};
 type Properties = "PropA" | "PropB" | "PropC" | 98013;
 type MappedType<Properties extends string | number | symbol> = {
-    [key in Properties]: key;
+	[key in Properties]: key;
 }
 type MyNewMappedType = MappedType<Properties>;
 
 // #TypeScript Mapped Types as clauses, agenda is to create getters and setters.
 type State = {
-    name: string;
-    age: string;
+	name: string;
+	age: string;
 }
 
 // # propertykey.
 // # only a string, number or a symbol can used as object property
 // # use Propertykey instead of string | number | symbol.
 type objectDeclaration<T extends PropertyKey> = {
-    [key in T]: T
+	[key in T]: T
 }
 const ObjectDefinition: objectDeclaration<PropertyKey> = { name: 'name', 123: '123', 98013: 98013 };
 let ObjectKeys: keyof typeof ObjectDefinition;
@@ -586,17 +586,17 @@ console.log('ObjectDefinition ', ObjectDefinition);
 
 // #ThisType Utility.
 type Math = {
-    double(): void;
-    triple(): void;
+	double(): void;
+	triple(): void;
 }
 
 export const math: Math = {
-    double(this: { value: number }) {
-        this.value *= 2;
-    },
-    triple(this: { value: number }) {
-        this.value *= 3;
-    }
+	double(this: { value: number }) {
+		this.value *= 2;
+	},
+	triple(this: { value: number }) {
+		this.value *= 3;
+	}
 }
 
 const thisutilityTypeObject = { ...math, value: 500 };
@@ -607,12 +607,12 @@ thisutilityTypeObject.triple();
 console.log(thisutilityTypeObject.value);
 
 export const MathwithTypeAnnotation: Math & ThisType<{ value: number }> = {
-    double() {
-        this.value = this.value * 2;
-    },
-    triple() {
-        this.value = this.value * 3;
-    }
+	double() {
+		this.value = this.value * 2;
+	},
+	triple() {
+		this.value = this.value * 3;
+	}
 }
 
 // Object.assign copies prperties from source to target.
@@ -623,3 +623,54 @@ thisTypeAnnotactionsObject.triple();
 console.log(thisTypeAnnotactionsObject.value);
 
 // # infer keyword is mainly used to create a type within a conditional type.
+
+
+
+// #Preserving AutoComplete for Literal Unions.
+type Padding = 'small' | 'normal' | 'large' | (string);
+let padding: Padding;
+padding = 'small'; // 12px
+padding = '8px';
+padding = 'Naseer Mohammed';
+
+const getPadding = (padding?: Padding): string => {
+	switch (padding) {
+		case 'large': {
+			return '12px';
+		}
+		case 'normal': {
+			return '8px';
+		}
+		case 'small': {
+			return '2px'
+		}
+		default: {
+			return '14px'
+		}
+	}
+}
+
+getPadding();
+
+/* #TypeScript Project References (Shared TypeScript Libraries). 
+#Problem area where you want to reference the ts files from lib project into app project. 
+# referening of ts files from lib project into app project can be achieved by making changes in the configuration of tscofig of lib project. 
+/* change in tsconfig of lib project */
+/* { 'declaration': true, 'declarationMap': true, /* uncomment 'composite': true , 'outDir': lib, 'rootDir':src} */
+/* next add change in tsconfig of app project */
+/* { 
+references:[ {path:'../example-lib/'} ]
+} */
+
+/* # app project
+in package.json file of app project add
+"scripts":{
+	build: "tsc --build"
+}
+# in app.js
+import {hello } from  '../../example-lib';
+*/
+
+/* Upgrading project to ES6 Modules.
+changes in packages.json { 'type': 'module', exports: './lib/index.js' }
+changes in tsconfig.json {'module':'nodenext'} */
