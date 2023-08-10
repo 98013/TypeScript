@@ -24,7 +24,7 @@
 # Modules.
 # Classes.
 # TypeScript Exhaustive Switch using discriminated Unions.
-# is Keyword.
+# is Keyword - you can create a Type Grard in TypeScript by using 'is' keyword in a function Return Type.
 # Using keyWord.
 # Interface.
 # type.

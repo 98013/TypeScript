@@ -627,7 +627,7 @@ console.log(thisTypeAnnotactionsObject.value);
 
 
 // #Preserving AutoComplete for Literal Unions.
-type Padding = 'small' | 'normal' | 'large' | (string);
+type Padding = 'small' | 'normal' | 'large' | (string & {});
 let padding: Padding;
 padding = 'small'; // 12px
 padding = '8px';
@@ -674,3 +674,65 @@ import {hello } from  '../../example-lib';
 /* Upgrading project to ES6 Modules.
 changes in packages.json { 'type': 'module', exports: './lib/index.js' }
 changes in tsconfig.json {'module':'nodenext'} */
+
+// # TypeScript Array Type Guards.
+type Square = {
+	type: 'square';
+	size: number;
+}
+
+type Rectangle = {
+	type: 'rectangle'
+	height: number;
+	width: number;
+}
+
+type Shape = Square | Rectangle;
+// @ts-ignore
+const shapes: Shape[] = getShapes();
+const square = shapes.find((s): s is Square => s.type == 'square');
+const size = square?.size;
+
+const rectangle = shapes.find((s): s is Rectangle => s.type == 'rectangle');
+const height = rectangle?.height;
+const widget = rectangle?.width;
+
+const getSquares = (s: Shape): s is Square => s.type == 'square';
+const getRectangles = (s: Shape): s is Rectangle => s.type == 'rectangle';
+const squares = shapes.find(getSquares);
+const rectangles = shapes.find(getRectangles);
+console.log(squares?.size)
+console.log(rectangles?.height, rectangles?.width)
+
+// # the most under rated feature Const.
+// Until or unless we specify a object as const then only we will be able to access property values or else we will accces it as string only.
+
+// @ts-ignore infers a as string because const Routes ={ admin: '/admin} as string because chage be changes as below
+
+// Object.freeze only works on outer level where const works on whole object
+
+Routes.admin = '/whatever'
+
+const Routes = {
+	home: '/',
+	admin: '/admin',
+	users: '/users'
+} as const;
+
+// @ts-ignore
+//type RouterKeys = keyof typeof Routes;
+// @ts-ignore
+//type Route = (typeof Routes)[RouterKeys]
+
+
+type Route = (typeof Routes)[keyof typeof Routes];
+const goToRoute = (route: Route) => { };
+console.log(goToRoute("/users"));
+
+// Empty Objet type specifies that it cannot be null or undefined.
+type emptyObjectType = {}
+
+// if you ever get an error indexing
+//1.use keyof typeof object.
+//2.use Record as they are indexed.
+//3.use str as keyof typeof myObj. 
