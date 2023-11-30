@@ -1,17 +1,23 @@
 {
+    "type": "module",
     "name": "your-project-name",
     "version": "1.0.0",
     "description": "Your project description",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon --exec ts-node src/typescript.ts --watch"
+        "start": "nodemon --exec ts-node src/useReducer.ts --watch"
     },
     "author": "Your Name",
     "license": "MIT",
     "dependencies": {
+        "@types/react": "^18.2.20",
+        "@types/react-dom": "^18.2.7",
         "axios": "^1.4.0",
         "node-fetch": "^3.3.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "touch-cli": "^0.0.1",
         "typescript": "^5.1.6"
     },
     "devDependencies": {
